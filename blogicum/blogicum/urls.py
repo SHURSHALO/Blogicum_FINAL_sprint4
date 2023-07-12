@@ -1,4 +1,3 @@
-
 from django.urls import include, path, reverse_lazy
 from django.conf import settings
 from django.conf.urls.static import static

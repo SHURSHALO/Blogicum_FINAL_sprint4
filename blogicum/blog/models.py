@@ -1,8 +1,8 @@
-
 from django.db import models
-from core.models import PublishedModel
 from django.contrib.auth import get_user_model
 from django.urls import reverse
+
+from core.models import PublishedModel
 
 
 User = get_user_model()
@@ -72,10 +72,13 @@ class Post(PublishedModel):
     class Meta:
         verbose_name = 'публикация'
         verbose_name_plural = 'Публикации'
-        ordering = ['-pub_date']
+        ordering = ('-pub_date',)
 
     def get_absolute_url(self):
         return reverse('blog:profile', args=[self.author])
+
+    def comment_count(self):
+        return self.comments.count()
 
     def __str__(self):
         return self.title
@@ -86,13 +89,24 @@ class Comment(models.Model):
     post = models.ForeignKey(
         Post,
         on_delete=models.CASCADE,
-        related_name='comment',
+        related_name='comments',
+        verbose_name='Пост',
+        help_text='Выберите пост, к которому относится комментарий',
     )
     created_at = models.DateTimeField(auto_now_add=True)
-    author = models.ForeignKey(User, on_delete=models.CASCADE)
+    author = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+        related_name='author',
+    )
 
     class Meta:
         ordering = ('created_at',)
+        verbose_name = 'комментарий'
+        verbose_name_plural = 'Комментарии'
+
+    def __str__(self):
+        return self.text
 
 
 class Profile(PublishedModel):
