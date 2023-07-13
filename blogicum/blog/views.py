@@ -21,17 +21,13 @@ from blogicum.settings import LIMIT_POSTS
 
 User = get_user_model()
 
-current_time = timezone.now()
-
 
 def profile_view(request, username):
     user = get_object_or_404(User, username=username)
-    if request.user.username == username:
-        posts = user.posts.filter(author__username=username)
-
-    else:
-        posts = user.posts.filter(
-            author__username=username,
+    posts = user.posts.all()
+    current_time = timezone.now()
+    if request.user.username != username:
+        posts = posts.filter(
             is_published=True,
             category__is_published=True,
             pub_date__lte=current_time,
@@ -143,6 +139,7 @@ class PostDetailView(DetailView):
 
 def index(request):
     template = 'blog/index.html'
+    current_time = timezone.now()
     post = Post.objects.select_related('category').filter(
         pub_date__lte=current_time,
         is_published=True,
@@ -158,11 +155,11 @@ def index(request):
 
 def category_posts(request, category_slug):
     template = 'blog/category.html'
+    current_time = timezone.now()
     category = get_object_or_404(
         Category, slug=category_slug, is_published=True
     )
     post_list = category.posts.select_related('category').filter(
-        category__slug=category_slug,
         is_published=True,
         pub_date__lte=current_time,
     )
@@ -191,7 +188,7 @@ def edit_comment(request, post_id, comment_id):
     comment = get_object_or_404(Comment, id=comment_id)
     if comment.author != request.user:
         return HttpResponseForbidden(
-            "У вас нет прав для редактирования этого комментария."
+            'У вас нет прав для редактирования этого комментария.'
         )
 
     if request.method == 'POST':
