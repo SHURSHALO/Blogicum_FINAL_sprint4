@@ -25,7 +25,7 @@ pip install -r requirements.txt
 
 python manage.py migrate
 
-### Запуск
+## Запуск
 python manage.py runserver
 
 Откройте веб-браузер и перейдите по адресу http://localhost:8000/, чтобы получить доступ к приложению Blogicum.
