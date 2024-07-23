@@ -119,11 +119,11 @@ Blogicum - это блоговая платформа на базе Django, ко
 ## Установка
 1. Клонируйте репозиторий на свою локальную машину:
 ```
-git clone git@github.com:SHURSHALO/Blogicum_sprint3.git
+git clone git@github.com:SHURSHALO/Blogicum_FINAL_sprint4.git
 ```
 2. Перейдите в директорию проекта:
 ```
-cd Blogicum_sprint3
+cd Blogicum_FINAL_sprint4
 ```
 3. Создайте и активируйте виртуальное окружение (опционально):
 ```
